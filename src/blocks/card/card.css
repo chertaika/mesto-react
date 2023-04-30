@@ -1,0 +1,6 @@
+.card {
+  position: relative;
+  transform: scale(1, 1);
+  transform-origin: center center;
+  transition: all .6s ease;
+}

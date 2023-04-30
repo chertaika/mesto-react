@@ -1,0 +1,4 @@
+.card_removing {
+  opacity: 0;
+  transform: scale(0, 0);
+}
