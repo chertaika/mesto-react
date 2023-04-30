@@ -3,7 +3,7 @@ import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js';
-import PopupWithImage from './PopupWithImage.js';
+import ImagePopup from './ImagePopup.js';
 
 export default function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -80,7 +80,7 @@ export default function App() {
         </label>
       </PopupWithForm>
 
-      <PopupWithImage card={selectedCard} onClose={closeAllPopups}/>
+      <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
 
       <PopupWithForm name={'edit-avatar'} title={'Обновить аватар'}
                      buttonText={'Сохранить'} isOpen={isEditAvatarPopupOpen}
