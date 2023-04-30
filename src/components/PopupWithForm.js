@@ -10,7 +10,7 @@ export default function PopupWithForm ({name, title, buttonText, isOpen, onClose
           </button>
         </form>
         <button className="popup__close-btn btn-hover" onClick={onClose} type="button"
-                aria-label="Закрыть всплывающее окно"></button>
+                aria-label="Закрыть всплывающее окно"/>
       </div>
     </div>
   );
