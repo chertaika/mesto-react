@@ -1,7 +1,7 @@
 export default function PopupWithImage({card, onClose}) {
   return (
     <div
-      className={`popup popup_type_photo-viewer` + (card !== null && ' popup_opened')}>
+      className={`popup popup_type_photo-viewer ${card !== null && 'popup_opened'}`}>
       <div className="popup__content">
         <button className="popup__close-btn btn-hover"
                 onClick={onClose}
