@@ -1,9 +1,17 @@
-import {settings} from "./constants.js";
+import {
+  METHOD_DELETE,
+  METHOD_PATCH,
+  METHOD_POST,
+  METHOD_PUT,
+  settings,
+} from './constants';
 
 class Api {
-  constructor({baseUrl, headers}) {
+  constructor({ baseUrl, headers, endpoints: { userEndpoint, cardsEndpoint } }) {
     this._address = baseUrl;
     this._headers = headers;
+    this._userEndpoint = userEndpoint;
+    this._cardsEndpoint = cardsEndpoint;
   }
 
   _checkResponse(res) {
@@ -13,79 +21,67 @@ class Api {
     return Promise.reject(res.status);
   }
 
+  _request(endpoint, options) {
+    return fetch(`${this._address}${endpoint}`, { headers: this._headers, ...options }).then(this._checkResponse);
+  }
+
   getUserInfo() {
-    return fetch(`${this._address}/users/me`, {
-      method: "GET",
-      headers: this._headers,
-    }).then(this._checkResponse);
+    return this._request(`${this._userEndpoint}/me`);
   }
 
   getInitialCards() {
-    return fetch(`${this._address}/cards`, {
-      method: "GET",
-      headers: this._headers,
-    }).then(this._checkResponse);
+    return this._request(this._cardsEndpoint);
   }
 
-  editUserInfo({name, about}) {
-    return fetch(`${this._address}/users/me`, {
-      method: "PATCH",
-      headers: this._headers,
+  editUserInfo({ name, about }) {
+    return this._request(`${this._userEndpoint}/me`, {
+      method: METHOD_PATCH,
       body: JSON.stringify({
-        name: name,
-        about: about
-      })
-    }).then(this._checkResponse);
+        name,
+        about,
+      }),
+    });
   }
 
-  editUserAvatar({avatar}) {
-    return fetch(`${this._address}/users/me/avatar`, {
-      method: "PATCH",
-      headers: this._headers,
+  editUserAvatar({ avatar }) {
+    return this._request(`${this._userEndpoint}/me/avatar`, {
+      method: METHOD_PATCH,
       body: JSON.stringify({
-        avatar: avatar,
-      })
-    }).then(this._checkResponse);
+        avatar,
+      }),
+    });
   }
 
-  addNewCard({name, link}) {
-    return fetch(`${this._address}/cards`, {
-      method: "POST",
-      headers: this._headers,
+  addNewCard({ name, link }) {
+    return this._request(this._cardsEndpoint, {
+      method: METHOD_POST,
       body: JSON.stringify({
-        name: name,
-        link: link
-      })
-    }).then(this._checkResponse);
+        name,
+        link,
+      }),
+    });
   }
 
   deleteCard(cardId) {
-    return fetch(`${this._address}/cards/${cardId}`, {
-      method: "DELETE",
-      headers: this._headers
-    }).then(this._checkResponse);
+    return this._request(`${this._cardsEndpoint}/${cardId}`, {
+      method: METHOD_DELETE,
+    });
   }
 
   _addLike(cardId) {
-    return fetch(`${this._address}/cards/${cardId}/likes`, {
-      method: "PUT",
-      headers: this._headers
-    }).then(this._checkResponse);
+    return this._request(`${this._cardsEndpoint}/${cardId}/likes`, {
+      method: METHOD_PUT,
+    });
   }
 
   _removeLike(cardId) {
-    return fetch(`${this._address}/cards/${cardId}/likes`, {
-      method: "DELETE",
-      headers: this._headers
-    }).then(this._checkResponse);
+    return this._request(`${this._cardsEndpoint}/${cardId}/likes`, {
+      method: METHOD_DELETE,
+    });
   }
 
   handleLike(cardId, isLiked) {
-    if(isLiked) {
-      return this._removeLike(cardId);
-    } else {
-      return this._addLike(cardId);
-    }
+    return isLiked ? this._removeLike(cardId) : this._addLike(cardId);
   }
 }
 
