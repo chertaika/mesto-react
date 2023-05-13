@@ -11,7 +11,7 @@ const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
 
   useEffect(() => {
     setUserData([currentUserName, currentUserDescription]);
-  }, [currentUserName, currentUserDescription]);
+  }, [isOpen, currentUserName, currentUserDescription]);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
