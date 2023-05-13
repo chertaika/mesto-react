@@ -43,7 +43,7 @@ const PopupWithForm = ({
           </button>
         </form>
         <button
-          className="{popup__close-btn btn-hover}"
+          className="popup__close-btn btn-hover"
           onMouseDown={onClose}
           type="button"
           aria-label="Закрыть всплывающее окно"
