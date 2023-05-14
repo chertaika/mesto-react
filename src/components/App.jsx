@@ -20,6 +20,9 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
+  const [buttonTextEditPopup, setButtonTextEditPopup] = useState('Сохранить');
+  const [buttonTextAddPopup, setButtonTextAddPopup] = useState('Создать');
+  const [buttonTextConfirmPopup, setButtonTextConfirmPopup] = useState('Да');
 
   const handleCardClick = (card) => {
     setSelectedCard(card);
@@ -62,39 +65,47 @@ const App = () => {
   };
 
   const handleConfirmationOfDelete = () => {
+    setButtonTextConfirmPopup('Сохранение...');
     api.deleteCard(deletedCard._id)
       .then(() => {
         setCards(cards.filter(card => card._id !== deletedCard._id));
         closeAllPopups();
       })
-      .catch(error => console.log(`Ошибка: ${error}`));
+      .catch(error => console.log(`Ошибка: ${error}`))
+      .finally(() => setButtonTextConfirmPopup('Да'));
   };
 
   const handleAddPlaceSubmit = (card) => {
+    setButtonTextAddPopup('Создание...');
     api.addNewCard(card)
       .then((newCard) => {
         setCards([newCard, ...cards]);
         closeAllPopups();
       })
-      .catch(error => console.log(`Ошибка: ${error}`));
+      .catch(error => console.log(`Ошибка: ${error}`))
+      .finally(() => setButtonTextAddPopup('Создать'));
   };
 
   const handleUpdateUser = (data) => {
+    setButtonTextEditPopup('Сохранение...');
     api.editUserInfo(data)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
       })
-      .catch(error => console.log(`Ошибка: ${error}`));
+      .catch(error => console.log(`Ошибка: ${error}`))
+      .finally(() => setButtonTextEditPopup('Сохранить'));
   };
 
   const handleUpdateAvatar = (data) => {
+    setButtonTextEditPopup('Сохранение...');
     api.editUserAvatar(data)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
       })
-      .catch(error => console.log(`Ошибка: ${error}`));
+      .catch(error => console.log(`Ошибка: ${error}`))
+      .finally(() => setButtonTextEditPopup('Сохранить'));
   };
 
   useEffect(() => {
@@ -132,24 +143,28 @@ const App = () => {
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
+          buttonText={buttonTextEditPopup}
         />
 
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
+          buttonText={buttonTextEditPopup}
         />
 
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onAddPlace={handleAddPlaceSubmit}
+          buttonText={buttonTextAddPopup}
         />
 
         <PopupWithConfirmation
           isOpen={deletedCard}
           onClose={closeAllPopups}
           onConfirm={handleConfirmationOfDelete}
+          buttonText={buttonTextConfirmPopup}
         />
 
         <ImagePopup

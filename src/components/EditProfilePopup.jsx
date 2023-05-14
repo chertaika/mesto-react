@@ -1,39 +1,48 @@
-import {
-  useContext, useState, useEffect,
-} from 'react';
+import { useContext } from 'react';
 import PopupWithForm from './PopupWithForm';
 import CurrentUserContext from '../contexts/CurrentUserContext';
+import useFormValidator from '../hooks/useFormValidator';
 
-const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
-  const [[name, about], setUserData] = useState(['', '']);
+const EditProfilePopup = ({
+  isOpen, onClose, onUpdateUser, buttonText,
+}) => {
+  // const {
+  //   inputValues, errorMessages, isValid, handleChange, resetForm, setInputValues,
+  // } = useFormValidator();
+  //
+  // const { name, about } = useContext(CurrentUserContext);
+  //
+  // useEffect(() => {
+  //   setInputValues({ name, about });
+  // }, [isOpen, name, about]);
 
-  const { name: currentUserName, about: currentUserDescription } = useContext(CurrentUserContext);
+  const {
+    name: currentUserName,
+    about: currentUserDescription,
+  } = useContext(CurrentUserContext);
 
-  useEffect(() => {
-    setUserData([currentUserName, currentUserDescription]);
-  }, [isOpen, currentUserName, currentUserDescription]);
+  const {
+    inputValues, errorMessages, isValid, handleChange, resetForm,
+  } = useFormValidator({
+    name: currentUserName,
+    about: currentUserDescription,
+  });
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    onUpdateUser({ name, about });
-  };
-
-  const handleChangeName = (evt) => {
-    setUserData([evt.target.value, about]);
-  };
-
-  const handleChangeDescription = (evt) => {
-    setUserData([name, evt.target.value]);
+    onUpdateUser(inputValues);
   };
 
   return (
     <PopupWithForm
       name="edit-profile"
       title="Редактировать профиль"
-      buttonText="Сохранить"
+      buttonText={buttonText}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      isValid={isValid}
+      resetForm={resetForm}
     >
       <label className="popup__field">
         <input
@@ -42,14 +51,15 @@ const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
           id="name-input"
           minLength="2"
           maxLength="40"
-          className="popup__input popup__input_type_name"
+          className={`popup__input popup__input_type_name ${errorMessages?.name && 'popup__input_type_error'}`}
           name="name"
           autoComplete="off"
-          value={name ?? ''}
-          onChange={handleChangeName}
+          defaultValue={inputValues.name || currentUserName}
+          // value={inputValues.name ?? ''}
+          onChange={handleChange}
           required
         />
-        <span className="popup__input-error name-input-error" />
+        <span className="popup__input-error name-input-error">{errorMessages?.name}</span>
       </label>
       <label className="popup__field">
         <input
@@ -58,14 +68,15 @@ const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
           id="desc-input"
           minLength="2"
           maxLength="200"
-          className="popup__input popup__input_type_desc"
+          className={`popup__input popup__input_type_desc ${errorMessages?.about && 'popup__input_type_error'}`}
           name="about"
           autoComplete="off"
-          value={about ?? ''}
-          onChange={handleChangeDescription}
+          defaultValue={inputValues.about || currentUserDescription}
+          // value={inputValues.about ?? ''}
+          onChange={handleChange}
           required
         />
-        <span className="popup__input-error desc-input-error" />
+        <span className="popup__input-error desc-input-error">{errorMessages?.about}</span>
       </label>
     </PopupWithForm>
   );

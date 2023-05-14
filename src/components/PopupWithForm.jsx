@@ -8,12 +8,17 @@ const PopupWithForm = ({
   onClose,
   onSubmit,
   children,
+  isValid,
+  resetForm,
 }) => {
   const handleOverlayClick = (evt) => {
     if (evt.target === evt.currentTarget) onClose();
   };
 
   useEffect(() => {
+    if (resetForm) {
+      resetForm();
+    }
     const handleEscClose = (evt) => {
       if (evt.key === 'Escape') onClose();
     };
@@ -38,7 +43,7 @@ const PopupWithForm = ({
           noValidate
         >
           {children}
-          <button className="popup__submit-btn" type="submit">
+          <button className={`popup__submit-btn ${!isValid && 'popup__submit-btn_disabled'}`} disabled={!isValid} type="submit">
             {buttonText}
           </button>
         </form>

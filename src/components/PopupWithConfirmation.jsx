@@ -1,7 +1,7 @@
 import PopupWithForm from './PopupWithForm';
 
 const PopupWithConfirmation = ({
-  isOpen, onClose, onConfirm,
+  isOpen, onClose, onConfirm, buttonText,
 }) => {
   const handleConfirm = (evt) => {
     evt.preventDefault();
@@ -12,10 +12,11 @@ const PopupWithConfirmation = ({
     <PopupWithForm
       name="delete-card"
       title="Вы уверены?"
-      buttonText="Да"
+      buttonText={buttonText}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleConfirm}
+      isValid
     />
   );
 };
