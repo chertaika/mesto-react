@@ -28,15 +28,14 @@ const EditAvatarPopup = ({
         <input
           type="url"
           placeholder="Ссылка на картинку"
-          id="avatar-input"
-          className={`popup__input popup__input_type_avatar ${errorMessages?.avatar && 'popup__input_type_error'}`}
+          className={`popup__input ${errorMessages?.avatar && 'popup__input_type_error'}`}
           name="avatar"
           autoComplete="off"
           value={inputValues.avatar ?? ''}
           required
           onChange={handleChange}
         />
-        <span className="popup__input-error avatar-input-error">{errorMessages?.avatar}</span>
+        <span className="popup__input-error">{errorMessages?.avatar}</span>
       </label>
     </PopupWithForm>
   );

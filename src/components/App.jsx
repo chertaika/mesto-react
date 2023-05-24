@@ -65,7 +65,7 @@ const App = () => {
   };
 
   const handleConfirmationOfDelete = () => {
-    setButtonTextConfirmPopup('Сохранение...');
+    setButtonTextConfirmPopup('Удаление...');
     api.deleteCard(deletedCard._id)
       .then(() => {
         setCards(cards.filter(card => card._id !== deletedCard._id));

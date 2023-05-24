@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Card from './Card';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 
@@ -40,17 +41,19 @@ const Main = ({
           aria-label="Добавить карточку"
         />
       </section>
-      <section className="elements" aria-label="Впечатляющие места России">
+      <TransitionGroup component="section" className="elements" aria-label="Впечатляющие места России">
         {cards.map(card => (
-          <Card
-            card={card}
-            key={card._id}
-            onCardClick={onCardClick}
-            onCardLike={onCardLike}
-            onCardDelete={onCardDelete}
-          />
+          <CSSTransition key={card._id} timeout={600} classNames="card">
+            <Card
+              card={card}
+              key={card._id}
+              onCardClick={onCardClick}
+              onCardLike={onCardLike}
+              onCardDelete={onCardDelete}
+            />
+          </CSSTransition>
         ))}
-      </section>
+      </TransitionGroup>
     </main>
   );
 };

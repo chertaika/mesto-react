@@ -28,31 +28,29 @@ const AddPlacePopup = ({
         <input
           type="text"
           placeholder="Название"
-          id="title-input"
           minLength="2"
           maxLength="30"
-          className={`popup__input popup__input_type_title ${errorMessages?.name && 'popup__input_type_error'}`}
+          className={`popup__input ${errorMessages?.name && 'popup__input_type_error'}`}
           name="name"
           autoComplete="off"
           required
           value={inputValues.name ?? ''}
           onChange={handleChange}
         />
-        <span className="popup__input-error title-input-error">{errorMessages?.name}</span>
+        <span className="popup__input-error">{errorMessages?.name}</span>
       </label>
       <label className="popup__field">
         <input
           type="url"
           placeholder="Ссылка на картинку"
-          id="link-input"
-          className={`popup__input popup__input_type_link ${errorMessages?.link && 'popup__input_type_error'}`}
+          className={`popup__input ${errorMessages?.link && 'popup__input_type_error'}`}
           name="link"
           autoComplete="off"
           required
           value={inputValues.link ?? ''}
           onChange={handleChange}
         />
-        <span className="popup__input-error link-input-error">{errorMessages?.link}</span>
+        <span className="popup__input-error">{errorMessages?.link}</span>
       </label>
     </PopupWithForm>
   );

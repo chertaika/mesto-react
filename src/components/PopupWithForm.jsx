@@ -37,7 +37,7 @@ const PopupWithForm = ({
       <div className="popup__container">
         <h2 className="popup__title">{title}</h2>
         <form
-          className="popup__form popup__form_card"
+          className="popup__form"
           name={name}
           onSubmit={onSubmit}
           noValidate

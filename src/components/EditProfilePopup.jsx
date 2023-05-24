@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import useFormValidator from '../hooks/useFormValidator';
@@ -6,27 +6,15 @@ import useFormValidator from '../hooks/useFormValidator';
 const EditProfilePopup = ({
   isOpen, onClose, onUpdateUser, buttonText,
 }) => {
-  // const {
-  //   inputValues, errorMessages, isValid, handleChange, resetForm, setInputValues,
-  // } = useFormValidator();
-  //
-  // const { name, about } = useContext(CurrentUserContext);
-  //
-  // useEffect(() => {
-  //   setInputValues({ name, about });
-  // }, [isOpen, name, about]);
-
   const {
-    name: currentUserName,
-    about: currentUserDescription,
-  } = useContext(CurrentUserContext);
+    inputValues, errorMessages, isValid, handleChange, resetForm, setInputValues,
+  } = useFormValidator();
 
-  const {
-    inputValues, errorMessages, isValid, handleChange, resetForm,
-  } = useFormValidator({
-    name: currentUserName,
-    about: currentUserDescription,
-  });
+  const { name, about } = useContext(CurrentUserContext);
+
+  useEffect(() => {
+    setInputValues({ name, about });
+  }, [isOpen, name, about]);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -48,35 +36,31 @@ const EditProfilePopup = ({
         <input
           type="text"
           placeholder="Имя"
-          id="name-input"
           minLength="2"
           maxLength="40"
-          className={`popup__input popup__input_type_name ${errorMessages?.name && 'popup__input_type_error'}`}
+          className={`popup__input ${errorMessages?.name && 'popup__input_type_error'}`}
           name="name"
           autoComplete="off"
-          defaultValue={inputValues.name || currentUserName}
-          // value={inputValues.name ?? ''}
+          value={inputValues.name ?? ''}
           onChange={handleChange}
           required
         />
-        <span className="popup__input-error name-input-error">{errorMessages?.name}</span>
+        <span className="popup__input-error">{errorMessages?.name}</span>
       </label>
       <label className="popup__field">
         <input
           type="text"
           placeholder="О себе"
-          id="desc-input"
           minLength="2"
           maxLength="200"
-          className={`popup__input popup__input_type_desc ${errorMessages?.about && 'popup__input_type_error'}`}
+          className={`popup__input ${errorMessages?.about && 'popup__input_type_error'}`}
           name="about"
           autoComplete="off"
-          defaultValue={inputValues.about || currentUserDescription}
-          // value={inputValues.about ?? ''}
+          value={inputValues.about ?? ''}
           onChange={handleChange}
           required
         />
-        <span className="popup__input-error desc-input-error">{errorMessages?.about}</span>
+        <span className="popup__input-error">{errorMessages?.about}</span>
       </label>
     </PopupWithForm>
   );
